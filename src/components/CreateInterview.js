@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header"; 
+import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import DateIcon from "../img/date.svg";
 import DropIcon from "../img/dropdown.svg";
@@ -15,7 +15,7 @@ const CreateInterview = () => {
   const [candidateEmails, setCandidateEmails] = useState([]);
   const [candidateEmail, setCandidateEmail] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const handleAddEmail = (e) => {
     if (e.key === "Enter" && candidateEmail) {
@@ -31,7 +31,7 @@ const CreateInterview = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); 
+    setLoading(true);
 
     const token = localStorage.getItem("token");
     const decodedToken = token ? JSON.parse(atob(token.split(".")[1])) : null;
@@ -105,7 +105,7 @@ const CreateInterview = () => {
                   placeholder="Enter Job Description"
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
-                  disabled={loading} 
+                  disabled={loading}
                 />
               </div>
 
@@ -173,18 +173,15 @@ const CreateInterview = () => {
                   <img src={DateIcon} alt="User Icon" style={styles.svgIcon} />
                 </div>
               </div>
-
-              <button
-                type="submit"
-                style={styles.submitButton }
-                disabled={loading} 
-              >
-                {loading ? (
-                  <div className="loader"></div>
-                ) : (
-                  "Send"
-                )}
-              </button>
+              <div style={styles.formGroup}>
+                <button
+                  type="submit"
+                  style={styles.submitButton}
+                  disabled={loading}
+                >
+                  {loading ? <div className="loader"></div> : "Send"}
+                </button>
+              </div>
             </form>
           </div>
         </main>
@@ -223,9 +220,9 @@ const styles = {
   formGroup: {
     marginBottom: "20px",
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "right",
     alignItems: "center",
-    width: "944px", 
+    width: "944px",
   },
   label: {
     fontSize: "32px",
@@ -249,7 +246,7 @@ const styles = {
     boxSizing: "border-box",
   },
   input2: {
-    padding: "10px 20px ", 
+    padding: "10px 20px ",
     borderRadius: "10px",
     border: "1px solid #0B66EF",
     fontSize: "24px",
@@ -260,8 +257,10 @@ const styles = {
     margin: "20px 0",
     boxSizing: "border-box",
     cursor: "pointer",
-    appearance: "none", 
+    appearance: "none", // Remove default browser styling
+    position: "relative",
   },
+
   textarea: {
     padding: "10px 20px ",
     borderRadius: "10px",
@@ -271,26 +270,26 @@ const styles = {
     height: "270px",
     color: "#535353B2",
     fontFamily: "DM Sans, sans-serif",
-    margin: "20px 0", 
+    margin: "20px 0",
     boxSizing: "border-box",
     resize: "none",
   },
   select: {
-    appearance: "none", 
+    appearance: "none",
     WebkitAppearance: "none",
     MozAppearance: "none",
     height: "70px",
-    padding: "10px 20px ", 
+    padding: "10px 20px ",
     borderRadius: "10px",
     border: "1px solid #D0D0D0",
     fontSize: "24px",
-    width: "100%", 
+    width: "100%",
     backgroundColor: "#ffff",
     fontFamily: "DM Sans, sans-serif",
     fontWeight: "400",
     color: "#535353B2",
     boxSizing: "border-box",
-    cursor: "pointer", 
+    cursor: "pointer",
   },
 
   submitButton: {
@@ -369,17 +368,17 @@ const styles = {
     marginRight: "10px",
   },
   loader: {
-    border: "4px solid rgba(255, 255, 255, 0.3)", 
+    border: "4px solid rgba(255, 255, 255, 0.3)",
     borderRadius: "50%",
-    borderTop: "4px solid #ffffff", 
+    borderTop: "4px solid #ffffff",
     width: "16px",
     height: "16px",
     animation: "spin 1s linear infinite",
   },
-  '@keyframes spin': {
-    '0%': { transform: 'rotate(0deg)' },
-    '100%': { transform: 'rotate(360deg)' }
-  }
+  "@keyframes spin": {
+    "0%": { transform: "rotate(0deg)" },
+    "100%": { transform: "rotate(360deg)" },
+  },
 };
 
 export default CreateInterview;
