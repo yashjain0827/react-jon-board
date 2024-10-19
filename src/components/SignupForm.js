@@ -45,26 +45,62 @@ const SignupForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (validate()) {
       try {
-        const response = await axios.post("http://localhost:5000/auth/signup", formData);
-        if(response.data){
-          alert("Registration successful! Please verify your email and phone.");
+        const signupResponse = await axios.post("http://localhost:5000/auth/signup", formData);
+        console.log("🚀 ~ handleSubmit ~ signupResponse:", signupResponse)
+        
+        if (signupResponse.data) {
+          //OTP to email
+          try {
+            const emailOtpResponse = await axios.post("http://localhost:5000/email/send-otp", {
+              medium: "email",
+            });
+  
+            if (emailOtpResponse.data) {
+              console.log("OTP sent to email successfully.");
+            } else {
+              console.log("Failed to send OTP to email.");
+              return; 
+            }
+          } catch (emailOtpError) {
+            console.log("Email OTP sending failed:", emailOtpError);
+            return; 
+          }
+  
+          //OTP to phone
+          try {
+            const phoneOtpResponse = await axios.post("http://localhost:5000/email/send-otp", {
+              medium: "phone",
+            });
+  
+            if (phoneOtpResponse.data) {
+              console.log("OTP sent to phone successfully.");
+            } else {
+              console.log("Failed to send OTP to phone.");
+              return; 
+            }
+          } catch (phoneOtpError) {
+            console.log("Phone OTP sending failed:", phoneOtpError);
+            return;
+          }
+  
+          alert("Registration successful! OTPs have been sent to both your email and phone.");
           navigate("/verify-otp");
+  
         }
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          console.error("Registration failed:", error.response.data.message);
-          alert(`Registration failed: ${error.response.data.message}`);
+      } catch (signupError) {
+        if (signupError.response && signupError.response.data && signupError.response.data.message) {
+          console.error("Registration failed:", signupError.response.data.message);
+          alert(`Registration failed: ${signupError.response.data.message}`);
         } else {
-          console.error("Registration failed:", error);
+          console.error("Registration failed:", signupError);
           alert("Registration failed. Please try again.");
         }
       }
     }
   };
-
   return (
     <div>
       <SignupHeader />

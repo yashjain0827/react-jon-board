@@ -12,13 +12,9 @@ const OtpVerification = () => {
 
   const handleEmailVerify = async () => {
     try {
-      const response = await axios.post("/api/verify-email", { otp: emailOtp });
+      const response = await axios.post("/email/verify-otp", { otp: emailOtp , medium:"email"});
       if (response.data.success) {
-        setEmailVerified(true);
-        alert("Email verified successfully!");
-      } else {
-        alert("Invalid OTP. Please try again.");
-      }
+        setEmailVerified(true);}
     } catch (error) {
       console.error("Error verifying email OTP:", error);
     }
@@ -26,35 +22,18 @@ const OtpVerification = () => {
 
   const handleMobileVerify = async () => {
     try {
-      const response = await axios.post("/api/verify-mobile", {
-        otp: mobileOtp,
+      const response = await axios.post("/email/verify-otp", {
+        otp: mobileOtp, medium:"phone"
       });
       if (response.data.success) {
         setMobileVerified(true);
-        alert("Mobile verified successfully!");
-        // Call login function if both OTPs are verified
-        await loginUser();
-      } else {
-        alert("Invalid OTP. Please try again.");
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error("Error verifying mobile OTP:", error);
     }
   };
-
-  const loginUser = async () => {
-    try {
-      const response = await axios.post("/api/login", {
-        email: "user@example.com",
-      });
-      localStorage.setItem("token", response.data.token); // Store JWT in localStorage
-      alert("Login successful!");
-      navigate("/dashboard"); // Redirect to the dashboard
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  };
-
+  
   return (
     <div>
       <SignupHeader />
