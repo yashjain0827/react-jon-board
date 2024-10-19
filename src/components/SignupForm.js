@@ -322,7 +322,7 @@ const styles = {
     color: "#292929B2",
     width: "50%",
     margin: "auto",
-    fontFamily: "'DM Sans', sans-serif", // Enclose in quotes and use fallback font
+    fontFamily: "'DM Sans', sans-serif", 
     fontWeight: 500,
     lineHeight: "28.95px",
   },

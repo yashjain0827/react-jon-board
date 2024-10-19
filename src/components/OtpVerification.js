@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SignupHeader from "./SignupHeader"; // Import the Header component
+import PhoneIcon from "../img/Vector.svg";
+import EmailIcon from "../img/mail.svg";
+import CheckCircle from "../img/check.svg";
 
 const OtpVerification = () => {
   const [emailOtp, setEmailOtp] = useState("");
@@ -28,9 +31,17 @@ const OtpVerification = () => {
 
       if (response?.data?.message === "Email verified successfully") {
         setEmailVerified(true);
+        alert("Email verified successfully");
+      } else {
+        alert("Failed to verify email. Please try again.");
       }
     } catch (error) {
-      console.log("Error verifying email OTP:", error);
+      if (error.response) {
+        alert(`Error verifying email OTP: ${error.response.data.message || error.response.data.error || "An error occurred"}`);
+      }  
+      else {
+        alert(`Error setting up the request: ${error.message}`);
+      }    
     }
   };
 
@@ -46,9 +57,17 @@ const OtpVerification = () => {
 
       if (response?.data?.message === "Phone number verified successfully") {
         setMobileVerified(true);
+        alert("Phone number verified successfully");
+      } else {
+        alert("Failed to verify phone number. Please try again.");
       }
     } catch (error) {
-      console.log("Error verifying mobile OTP:", error);
+      if (error.response) {
+        alert(`Error verifying email OTP: ${error.response.data.message || error.response.data.error || "An error occurred"}`);
+      }  
+      else {
+        alert(`Error setting up the request: ${error.message}`);
+      }    
     }
   };
 
@@ -67,12 +86,24 @@ const OtpVerification = () => {
 
         <div style={styles.formContainer}>
           <form style={styles.form}>
-            <h2 style={{ margin: "0 0 10px 0" }}>Verify OTP</h2>
-            <p style={{ margin: "0 0 10px 0" }}>
-              Please enter the OTP sent to your email and phone.
+            <h2 style={{
+                margin: "0px",
+                fontSize: "32px",
+                fontFamily: "DM Sans, sans-serif",
+                color: "#000000",
+                fontWeight: "600",
+              }}>Sign Up</h2>
+            <p  style={{
+                margin: "10px 0px 30px 0px",
+                fontSize: "16px",
+                fontFamily: "DM Sans, sans-serif",
+                color: "#292929B2",
+                fontWeight: "500",
+              }}>
+            Lorem Ipsum is simply dummy text
             </p>
 
-            {/* Email OTP Input */}
+            {/* Email OTP */}
             <div style={styles.inputWrapper}>
               <input
                 type="text"
@@ -82,19 +113,19 @@ const OtpVerification = () => {
                 disabled={emailVerified}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
-              <i className="fa-regular fa-user" style={styles.icon}></i>
+              <img src={EmailIcon} alt="Phone Icon" style={styles.svgIcon} />
               {emailVerified && (
-                <i className="fa-solid fa-check" style={styles.successIcon}></i>
-              )}
+               <img src={CheckCircle} alt="Check Icon" style={styles.checkIcon} />
+             )}
             </div>
 
             {!emailVerified && (
               <button onClick={handleEmailVerify} style={styles.button}>
-                Verify Email OTP
+                Verify
               </button>
             )}
 
-            {/* Mobile OTP Input */}
+            {/* Mobile OTP */}
             <div style={styles.inputWrapper}>
               <input
                 type="text"
@@ -104,15 +135,15 @@ const OtpVerification = () => {
                 disabled={mobileVerified}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
-              <i className="fa-regular fa-user" style={styles.icon}></i>
+              <img src={PhoneIcon} alt="Phone Icon" style={styles.svgIcon} />
               {mobileVerified && (
-                <i className="fa-solid fa-check" style={styles.successIcon}></i>
-              )}
+               <img src={CheckCircle} alt="Check Icon" style={styles.checkIcon} />
+             )}
             </div>
 
             {!mobileVerified && (
               <button onClick={handleMobileVerify} style={styles.button}>
-                Verify Mobile OTP
+                Verify
               </button>
             )}
           </form>
@@ -138,10 +169,13 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     textAlign: "left",
-    fontSize: "26px",
-    color: "#333",
+    fontSize: "22.24px",
+    color: "#292929B2",
     width: "50%",
     margin: "auto",
+    fontFamily: "'DM Sans', sans-serif", 
+    fontWeight: 500,
+    lineHeight: "28.95px",
   },
   formContainer: {
     width: "50%",
@@ -153,7 +187,7 @@ const styles = {
   },
   form: {
     width: "100%",
-    maxWidth: "450px",
+    maxWidth: "600px",
     display: "flex",
     flexDirection: "column",
     padding: "20px 40px",
@@ -161,35 +195,45 @@ const styles = {
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
     justifyContent: "center",
     alignItems: "center",
-    border: "2px solid blue",
+    border: "2px solid #3F71FF",
   },
   input: {
     padding: "10px",
     paddingLeft: "40px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
+    borderRadius: "7px",
+    border: "1px solid #CCCCCC",
     fontSize: "14px",
-    backgroundColor: "rgb(238 238 238)",
-    width: "88%",
+    backgroundColor: "#F4F4F4",
+    width: "542px",
+    height :"49px",
+    fontSize: "24px",
+    fontFamily: "DM Sans, sans-serif",
+    color: "#535353",
+    fontWeight: "400",
   },
   button: {
-    margin: "10px 0",
-    padding: "10px",
-    backgroundColor: "#007bff",
-    color: "#fff",
+    margin: "10px 10px",
+    backgroundColor: "#0B66EF",
     border: "none",
-    borderRadius: "4px",
+    borderRadius: "7px",
     cursor: "pointer",
-    width: "100%",
+    width: "595px",
+    height: "43px",
+    fontSize: "20px",
+    fontFamily: "DM Sans, sans-serif",
+    color: "#FFFFFF",
+    fontWeight: "700",
   },
-  icon: {
+  checkIcon: {
     position: "absolute",
     left: "10px",
     top: "50%",
     transform: "translateY(-50%)",
+    width: "18px",
+    height: "18px",
     pointerEvents: "none",
-    fontSize: "18px",
-    color: "#666",
+    paddingLeft:"10px",
+    right:"10px"
   },
   successIcon: {
     position: "absolute",
@@ -206,6 +250,16 @@ const styles = {
     position: "relative",
     marginBottom: "10px",
     width: "100%",
+  },
+  svgIcon: {
+    position: "absolute",
+    left: "10px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: "18px",
+    height: "18px",
+    pointerEvents: "none",
+    paddingLeft:"10px",
   },
 };
 
