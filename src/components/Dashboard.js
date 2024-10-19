@@ -33,26 +33,25 @@ const styles = {
   content: {
     display: "flex",
     flex: 1,
+    paddingTop :"50px"
   },
   body: {
     flex: 1,
-    // display: "flex",
-    // justifyContent: "center",
-    // alignItems: "center",
-    backgroundColor: "#ffff", // Background color for the main area
+    backgroundColor: "#ffff", 
+    paddingLeft:"50px"
   },
   button: {
-    padding: "12px 24px",
-
+    width  : "310px",
+    height:"57px",
     background: "#0B66EF",
-
     color: "#fff",
     border: "none",
-    borderRadius: "5px",
+    borderRadius: "8.32px",
     cursor: "pointer",
-    fontSize: "16px", // Larger button text
+    fontSize: "33px", // Larger button text
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
     margin: "20px",
+    fontWeight:"600"
   },
 };
 

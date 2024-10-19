@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import HomeIcon from "../img/home.svg";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const Sidebar = () => {
     <div style={styles.sidebar}>
       <ul style={styles.menu}>
         <li onClick={() => navigate("/dashboard")} style={styles.menuItem}>
-          <i className="fa-solid fa-house" style={styles.icon}></i>
+          <img src={HomeIcon} alt="Phone Icon" style={styles.svgIcon} />
         </li>
       </ul>
     </div>
@@ -37,6 +38,12 @@ const styles = {
   icon: {
     fontSize: "35.83px", // Controls icon size
     color: "#576474",
+  },
+  svgIcon: {
+    left: "10px",
+    width: "43px", 
+    height: "43px",
+    pointerEvents: "none", 
   },
 };
 
