@@ -22,6 +22,8 @@ const OtpVerification = () => {
   const handleEmailVerify = async (e) => {
     e.preventDefault();
     try {
+      setEmailVerified(true);
+
       const token = localStorage.getItem("token");
       const response = await axios.post(
         "http://localhost:5000/email/verify-otp",
@@ -37,11 +39,16 @@ const OtpVerification = () => {
       }
     } catch (error) {
       if (error.response) {
-        alert(`Error verifying email OTP: ${error.response.data.message || error.response.data.error || "An error occurred"}`);
-      }  
-      else {
+        alert(
+          `Error verifying email OTP: ${
+            error.response.data.message ||
+            error.response.data.error ||
+            "An error occurred"
+          }`
+        );
+      } else {
         alert(`Error setting up the request: ${error.message}`);
-      }    
+      }
     }
   };
 
@@ -63,11 +70,16 @@ const OtpVerification = () => {
       }
     } catch (error) {
       if (error.response) {
-        alert(`Error verifying email OTP: ${error.response.data.message || error.response.data.error || "An error occurred"}`);
-      }  
-      else {
+        alert(
+          `Error verifying email OTP: ${
+            error.response.data.message ||
+            error.response.data.error ||
+            "An error occurred"
+          }`
+        );
+      } else {
         alert(`Error setting up the request: ${error.message}`);
-      }    
+      }
     }
   };
 
@@ -86,21 +98,27 @@ const OtpVerification = () => {
 
         <div style={styles.formContainer}>
           <form style={styles.form}>
-            <h2 style={{
+            <h2
+              style={{
                 margin: "0px",
                 fontSize: "32px",
                 fontFamily: "DM Sans, sans-serif",
                 color: "#000000",
                 fontWeight: "600",
-              }}>Sign Up</h2>
-            <p  style={{
+              }}
+            >
+              Sign Up
+            </h2>
+            <p
+              style={{
                 margin: "10px 0px 30px 0px",
                 fontSize: "16px",
                 fontFamily: "DM Sans, sans-serif",
                 color: "#292929B2",
                 fontWeight: "500",
-              }}>
-            Lorem Ipsum is simply dummy text
+              }}
+            >
+              Lorem Ipsum is simply dummy text
             </p>
 
             {/* Email OTP */}
@@ -115,8 +133,12 @@ const OtpVerification = () => {
               />
               <img src={EmailIcon} alt="Phone Icon" style={styles.svgIcon} />
               {emailVerified && (
-               <img src={CheckCircle} alt="Check Icon" style={styles.checkIcon} />
-             )}
+                <img
+                  src={CheckCircle}
+                  alt="Check Icon"
+                  style={styles.checkIcon}
+                />
+              )}
             </div>
 
             {!emailVerified && (
@@ -137,8 +159,12 @@ const OtpVerification = () => {
               />
               <img src={PhoneIcon} alt="Phone Icon" style={styles.svgIcon} />
               {mobileVerified && (
-               <img src={CheckCircle} alt="Check Icon" style={styles.checkIcon} />
-             )}
+                <img
+                  src={CheckCircle}
+                  alt="Check Icon"
+                  style={styles.checkIcon}
+                />
+              )}
             </div>
 
             {!mobileVerified && (
@@ -173,7 +199,7 @@ const styles = {
     color: "#292929B2",
     width: "50%",
     margin: "auto",
-    fontFamily: "'DM Sans', sans-serif", 
+    fontFamily: "'DM Sans', sans-serif",
     fontWeight: 500,
     lineHeight: "28.95px",
   },
@@ -205,7 +231,7 @@ const styles = {
     fontSize: "14px",
     backgroundColor: "#F4F4F4",
     width: "542px",
-    height :"49px",
+    height: "49px",
     fontSize: "24px",
     fontFamily: "DM Sans, sans-serif",
     color: "#535353",
@@ -226,14 +252,12 @@ const styles = {
   },
   checkIcon: {
     position: "absolute",
-    left: "10px",
+    right: "20px",
     top: "50%",
     transform: "translateY(-50%)",
-    width: "18px",
-    height: "18px",
+    width: "21.85px",
+    height: "121.85px",
     pointerEvents: "none",
-    paddingLeft:"10px",
-    right:"10px"
   },
   successIcon: {
     position: "absolute",
@@ -259,7 +283,7 @@ const styles = {
     width: "18px",
     height: "18px",
     pointerEvents: "none",
-    paddingLeft:"10px",
+    paddingLeft: "10px",
   },
 };
 

@@ -15,7 +15,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("token");
 
     try {
       await fetch("http://localhost:5000/auth/logout", {
@@ -93,6 +93,7 @@ const styles = {
     alignItems: "center",
   },
   user: {
+    position: "relative", // Added to make dropdown relative to this div
     display: "flex",
     alignItems: "center",
     marginLeft: "20px",
@@ -125,10 +126,13 @@ const styles = {
   },
   dropdownMenu: {
     position: "absolute",
+    top: "100%", // Places the dropdown right below the user div
+    left: "0", // Aligns the dropdown to the left of the user div
     backgroundColor: "#fff",
     boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
     borderRadius: "5px",
     marginTop: "10px",
+    zIndex: 1, // Ensures it appears above other content
   },
   logoutOption: {
     padding: "15px 50px",
@@ -137,9 +141,8 @@ const styles = {
     backgroundColor: "#0B66EF",
     border: "none",
     borderRadius: "8.32px",
-    cursor: "pointer",
-    fontSize: "16px", 
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", 
+    fontSize: "16px",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
   },
 };
 
