@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SignupHeader from "./SignupHeader"; // Import the Header component
@@ -10,30 +10,57 @@ const OtpVerification = () => {
   const [mobileVerified, setMobileVerified] = useState(false);
   const navigate = useNavigate();
 
-  const handleEmailVerify = async () => {
-    try {
-      const response = await axios.post("/email/verify-otp", { otp: emailOtp , medium:"email"});
-      if (response.data.success) {
-        setEmailVerified(true);}
-    } catch (error) {
-      console.error("Error verifying email OTP:", error);
+  useEffect(() => {
+    if (emailVerified && mobileVerified) {
+      navigate("/dashboard");
     }
-  };
+  }, [emailVerified, mobileVerified, navigate]);
 
-  const handleMobileVerify = async () => {
+  const handleEmailVerify = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post("/email/verify-otp", {
-        otp: mobileOtp, medium:"phone"
-      });
-      if (response.data.success) {
-        setMobileVerified(true);
-        navigate("/dashboard");
+      const token = localStorage.getItem("token"); 
+      const response = await axios.post(
+        "http://localhost:5000/email/verify-otp",
+        { otp: emailOtp, medium: "email" },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        }
+      );
+      console.log("🚀 ~ handleEmailVerify ~ response:", response)
+  
+      if (response?.data?.message === "Email verified successfully") {
+        setEmailVerified(true);
       }
     } catch (error) {
-      console.error("Error verifying mobile OTP:", error);
+      console.log("Error verifying email OTP:", error);
     }
   };
   
+  const handleMobileVerify = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token"); 
+      const response = await axios.post(
+        "http://localhost:5000/email/verify-otp",
+        { otp: mobileOtp, medium: "phone" },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        }
+      );  
+      if (response?.data?.message === "Phone number verified successfully") {
+        setMobileVerified(true);
+      }
+    } catch (error) {
+      console.log("Error verifying mobile OTP:", error);
+    }
+  };
+  
+
   return (
     <div>
       <SignupHeader />

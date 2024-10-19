@@ -45,57 +45,71 @@ const SignupForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (validate()) {
       try {
         const signupResponse = await axios.post("http://localhost:5000/auth/signup", formData);
-        console.log("🚀 ~ handleSubmit ~ signupResponse:", signupResponse)
-        
+        console.log("🚀 ~ handleSubmit ~ signupResponse:", signupResponse);
+
         if (signupResponse.data) {
-          //OTP to email
+          const token = signupResponse.data.token;
+          localStorage.setItem("token", token);
+
+          const headers = {
+            Authorization: `Bearer ${token}`,
+          };
+
+          // OTP to email
           try {
-            const emailOtpResponse = await axios.post("http://localhost:5000/email/send-otp", {
-              medium: "email",
-            });
-  
+            const emailOtpResponse = await axios.post(
+              "http://localhost:5000/email/send-otp",
+              {
+                medium: "email",
+              },
+              { headers }
+            );
+
             if (emailOtpResponse.data) {
               console.log("OTP sent to email successfully.");
             } else {
               console.log("Failed to send OTP to email.");
-              return; 
+              return;
             }
           } catch (emailOtpError) {
             console.log("Email OTP sending failed:", emailOtpError);
-            return; 
+            return;
           }
-  
-          //OTP to phone
+
+          // OTP to phone
           try {
-            const phoneOtpResponse = await axios.post("http://localhost:5000/email/send-otp", {
-              medium: "phone",
-            });
-  
+            const phoneOtpResponse = await axios.post(
+              "http://localhost:5000/email/send-otp",
+              {
+                medium: "phone",
+              },
+              { headers }
+            );
+
             if (phoneOtpResponse.data) {
               console.log("OTP sent to phone successfully.");
             } else {
               console.log("Failed to send OTP to phone.");
-              return; 
+              return;
             }
           } catch (phoneOtpError) {
             console.log("Phone OTP sending failed:", phoneOtpError);
             return;
           }
-  
+
           alert("Registration successful! OTPs have been sent to both your email and phone.");
           navigate("/verify-otp");
-  
         }
       } catch (signupError) {
         if (signupError.response && signupError.response.data && signupError.response.data.message) {
-          console.error("Registration failed:", signupError.response.data.message);
+          console.log("Registration failed:", signupError.response.data.message);
           alert(`Registration failed: ${signupError.response.data.message}`);
         } else {
-          console.error("Registration failed:", signupError);
+          console.log("Registration failed:", signupError);
           alert("Registration failed. Please try again.");
         }
       }
