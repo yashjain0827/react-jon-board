@@ -30,8 +30,8 @@ const CreateInterview = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem("token"); 
-    const decodedToken = token ? JSON.parse(atob(token.split('.')[1])) : null;
+    const token = localStorage.getItem("token");
+    const decodedToken = token ? JSON.parse(atob(token.split(".")[1])) : null;
     const companyId = decodedToken ? decodedToken.companyId : null;
 
     if (!companyId) {
@@ -49,20 +49,26 @@ const CreateInterview = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/job/create", jobData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:5000/job/create",
+        jobData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       console.log("Job created successfully:", response.data);
       if (response?.data) {
         alert("Job created successfully!");
         navigate("/dashboard");
-
       }
     } catch (error) {
-      alert("Error creating job: " + (error.response?.data?.message || "Please try again later."));
+      alert(
+        "Error creating job: " +
+          (error.response?.data?.message || "Please try again later.")
+      );
     }
   };
 
@@ -97,7 +103,7 @@ const CreateInterview = () => {
 
               <div style={styles.formGroup}>
                 <label style={styles.label}>Experience Level</label>
-                <div style={{ position: "relative" }}>
+                <div style={{ position: "relative", width: "653px" }}>
                   <select
                     style={styles.select}
                     value={experienceLevel}
@@ -108,10 +114,13 @@ const CreateInterview = () => {
                     <option value="Mid">Mid</option>
                     <option value="Senior">Senior</option>
                   </select>
-                  <img src={DropIcon} alt="Dropdown Icon" style={styles.svgIcon} />
+                  <img
+                    src={DropIcon}
+                    alt="Dropdown Icon"
+                    style={styles.svgIcon}
+                  />
                 </div>
               </div>
-
 
               <div style={styles.formGroup}>
                 <label style={styles.label}>Add Candidate</label>
@@ -143,9 +152,9 @@ const CreateInterview = () => {
 
               <div style={styles.formGroup}>
                 <label style={styles.label}>End Date</label>
-                <div style={{ position: "relative" }}>
+                <div style={{ position: "relative", width: "653px" }}>
                   <input
-                    style={{ ...styles.input }}
+                    style={styles.input2}
                     type="text"
                     placeholder="Select a Date"
                     value={endDate}
@@ -155,10 +164,12 @@ const CreateInterview = () => {
                   />
                   <img src={DateIcon} alt="User Icon" style={styles.svgIcon} />
                 </div>
-
               </div>
 
-              <button type="submit" style={{ ...styles.submitButton, alignSelf: "flex-end" }}>
+              <button
+                type="submit"
+                style={{ ...styles.submitButton, alignSelf: "flex-end" }}
+              >
                 Send
               </button>
             </form>
@@ -194,13 +205,14 @@ const styles = {
   form: {
     display: "flex",
     flexDirection: "column",
-    margin: "80px"
+    margin: "80px",
   },
   formGroup: {
     marginBottom: "20px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    width: "944px", // Fixed typo from "widthe" to "width"
   },
   label: {
     fontSize: "32px",
@@ -208,41 +220,66 @@ const styles = {
     textAlign: "right",
     paddingRight: "10px",
     fontWeight: "400",
-    fontFamily: 'DM Sans, sans-serif'
+    fontFamily: "DM Sans, sans-serif",
+    width: "291px",
   },
   input: {
-    padding: "10px 0px 10px 40px",
+    padding: "10px 20px ", // Adjust padding for icon space
     borderRadius: "10px",
     border: "1px solid #0B66EF",
     fontSize: "24px",
     width: "653px",
     height: "50px",
     color: "#535353B2",
-    fontFamily: 'DM Sans, sans-serif'
-
+    fontFamily: "DM Sans, sans-serif",
+    margin: "20px 0", // Uniform margin
+    boxSizing: "border-box", // Prevents padding/border from affecting width
+  },
+  input2: {
+    padding: "10px 20px ", // Adjust padding for icon space
+    borderRadius: "10px",
+    border: "1px solid #0B66EF",
+    fontSize: "24px",
+    width: "100%", // Ensure it fills the wrapper
+    height: "50px",
+    color: "#535353B2",
+    fontFamily: "DM Sans, sans-serif",
+    margin: "20px 0",
+    boxSizing: "border-box",
+    cursor: "pointer",
+    appearance: "none", // Ensure consistency across browsers
   },
   textarea: {
-    width: "653px",
-    padding: "20px 0px 20px 40px",
+    padding: "10px 20px ", // Adjust padding for icon space
     borderRadius: "10px",
     border: "1px solid #D0D0D0",
     fontSize: "24px",
+    width: "653px",
     height: "270px",
     color: "#535353B2",
-    fontFamily: 'DM Sans, sans-serif',
+    fontFamily: "DM Sans, sans-serif",
+    margin: "20px 0", // Uniform margin
+    boxSizing: "border-box",
+    resize: "none", // Optional to prevent resizing
   },
   select: {
-    width: "695px",
+    appearance: "none", // Hide default arrow
+    WebkitAppearance: "none",
+    MozAppearance: "none",
     height: "70px",
-    padding: "10px 0px 10px 40px",
+    padding: "10px 20px ", // Adjust padding for icon space
     borderRadius: "10px",
     border: "1px solid #D0D0D0",
     fontSize: "24px",
+    width: "100%", // Ensure it fills the wrapper
     backgroundColor: "#ffff",
-    fontFamily: 'DM Sans, sans-serif',
+    fontFamily: "DM Sans, sans-serif",
     fontWeight: "400",
-    color: "#535353B2"
+    color: "#535353B2",
+    boxSizing: "border-box",
+    cursor: "pointer", // Optional to ensure it looks clickable
   },
+
   submitButton: {
     padding: "10px",
     backgroundColor: "#0B66EF",
@@ -256,23 +293,22 @@ const styles = {
     height: "49px",
     alignSelf: "center",
     fontWeight: "700",
-    fontFamily: 'DM Sans, sans-serif',
-
+    fontFamily: "DM Sans, sans-serif",
   },
-
   svgIcon: {
     position: "absolute",
-    right: "10px",
+    right: "15px", // Adjust for padding
     top: "50%",
-    transform: "translateY(-50%)",
+    transform: "translateY(-50%)", // Center vertically
+    pointerEvents: "none", // Prevent interference with clicks
     width: "18px",
     height: "20px",
-    paddingRight: "15px"
   },
+
   emailInputContainer: {
     display: "flex",
     flexDirection: "column",
-    width: "695px",
+    width: "653px",
   },
   tagInput: {
     display: "flex",
@@ -293,7 +329,7 @@ const styles = {
     fontSize: "20px",
     border: "1px solid #D0D0D0",
     color: "#535353B2",
-    fontWeight: "400"
+    fontWeight: "400",
   },
   removeEmailTag: {
     marginLeft: "8px",
