@@ -27,7 +27,8 @@ const SignupForm = () => {
       newErrors.name = "Name should have at least 4 characters";
     }
     if (!/^[6-9]\d{9}$/.test(formData.phone)) {
-      newErrors.phone = "Phone number must be a valid 10-digit Indian number starting with 6, 7, 8, or 9";
+      newErrors.phone =
+        "Phone number must be a valid 10-digit Indian number starting with 6, 7, 8, or 9";
     }
     if (!formData.companyName) {
       newErrors.companyName = "Company name is required";
@@ -52,7 +53,10 @@ const SignupForm = () => {
 
     if (validate()) {
       try {
-        const signupResponse = await axios.post("http://localhost:5000/auth/signup", formData);
+        const signupResponse = await axios.post(
+          "http://localhost:5000/auth/signup",
+          formData
+        );
         console.log("🚀 ~ handleSubmit ~ signupResponse:", signupResponse);
 
         if (signupResponse.data) {
@@ -105,12 +109,21 @@ const SignupForm = () => {
             return;
           }
 
-          alert("Registration successful! OTPs have been sent to both your email and phone.");
+          alert(
+            "Registration successful! OTPs have been sent to both your email and phone."
+          );
           navigate("/verify-otp");
         }
       } catch (signupError) {
-        if (signupError.response && signupError.response.data && signupError.response.data.message) {
-          console.log("Registration failed:", signupError.response.data.message);
+        if (
+          signupError.response &&
+          signupError.response.data &&
+          signupError.response.data.message
+        ) {
+          console.log(
+            "Registration failed:",
+            signupError.response.data.message
+          );
           alert(`Registration failed: ${signupError.response.data.message}`);
         } else {
           console.log("Registration failed:", signupError);
@@ -126,14 +139,36 @@ const SignupForm = () => {
       <div style={styles.pageContainer}>
         <div style={styles.textContainer}>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and  typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley
           </p>
         </div>
 
         <div style={styles.formContainer}>
           <form onSubmit={handleSubmit} style={styles.form}>
-            <h2 style={{ margin: "0px", fontSize: "32px", fontFamily: 'DM Sans, sans-serif', color: "#000000", fontWeight: "600" }}>Sign Up</h2>
-            <p style={{ margin: "5px", fontSize: "16px", fontFamily: 'DM Sans, sans-serif', color: "#292929B2", fontWeight: "500" }}>Lorem ipsum is simply dummy text</p>
+            <h2
+              style={{
+                margin: "0px",
+                fontSize: "32px",
+                fontFamily: "DM Sans, sans-serif",
+                color: "#000000",
+                fontWeight: "600",
+              }}
+            >
+              Sign Up
+            </h2>
+            <p
+              style={{
+                margin: "10px 0px 30px 0px",
+                fontSize: "16px",
+                fontFamily: "DM Sans, sans-serif",
+                color: "#292929B2",
+                fontWeight: "500",
+              }}
+            >
+              Lorem ipsum is simply dummy text
+            </p>
 
             {/* Name Input with Icon */}
             <div style={styles.inputWrapper}>
@@ -174,8 +209,10 @@ const SignupForm = () => {
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
               <img src={UserIcon} alt="User Icon" style={styles.svgIcon} />
-              </div>
-            {errors.companyName && <div style={styles.error}>{errors.companyName}</div>}
+            </div>
+            {errors.companyName && (
+              <div style={styles.error}>{errors.companyName}</div>
+            )}
 
             {/* Company Email Input with Icon */}
             <div style={styles.inputWrapper}>
@@ -203,17 +240,52 @@ const SignupForm = () => {
               />
               <img src={GroupsIcon} alt="Users Icon" style={styles.svgIcon} />
             </div>
-            {errors.employeeSize && <div style={styles.error}>{errors.employeeSize}</div>}
+            {errors.employeeSize && (
+              <div style={styles.error}>{errors.employeeSize}</div>
+            )}
 
-            <p  style={{ marginTop: "10px", fontSize: "16px", fontFamily: 'DM Sans, sans-serif', color: "#292929B2", fontWeight: "700",justifyContent:"center" ,textAlign:'center'}}>
+            <p
+              style={{
+                marginTop: "10px",
+                fontSize: "16px",
+                fontFamily: "DM Sans, sans-serif",
+                color: "#292929B2",
+                fontWeight: "700",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
               By clicking on the proceed you will accept our{" "}
             </p>
-            <p style={{ marginTop: "-10px", fontSize: "16px", fontFamily: 'DM Sans, sans-serif', color: "#292929B2", fontWeight: "700",justifyContent:"center" ,textAlign:'center'}}>
-              <a href="#" style={{ textDecoration: "none", color: "#0B66EFB2" }}>Terms</a> &{" "}
-              <a href="#" style={{ textDecoration: "none", color: "#0B66EFB2"}}>Conditions</a>
+            <p
+              style={{
+                marginTop: "-10px",
+                fontSize: "16px",
+                fontFamily: "DM Sans, sans-serif",
+                color: "#292929B2",
+                fontWeight: "700",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <a
+                href="#"
+                style={{ textDecoration: "none", color: "#0B66EFB2" }}
+              >
+                Terms
+              </a>{" "}
+              &{" "}
+              <a
+                href="#"
+                style={{ textDecoration: "none", color: "#0B66EFB2" }}
+              >
+                Conditions
+              </a>
             </p>
 
-            <button type="submit" style={styles.button}>Proceed</button>
+            <button type="submit" style={styles.button}>
+              Proceed
+            </button>
           </form>
         </div>
       </div>
@@ -276,7 +348,7 @@ const styles = {
     width: "90%",
     fontFamily: "DM Sans, sans-serif",
     color: "#535353",
-    fontWeight: "400"
+    fontWeight: "400",
   },
   error: {
     color: "red",
@@ -291,8 +363,8 @@ const styles = {
     borderRadius: "4px",
     cursor: "pointer",
     width: "100%",
-    fontSize:"24px",
-    fontWeight:"700"
+    fontSize: "24px",
+    fontWeight: "700",
   },
   inputWrapper: {
     position: "relative",
@@ -304,11 +376,10 @@ const styles = {
     left: "10px",
     top: "50%",
     transform: "translateY(-50%)",
-    width: "18px", 
+    width: "18px",
     height: "18px",
-    pointerEvents: "none", 
+    pointerEvents: "none",
   },
-
 };
 
 export default SignupForm;

@@ -33,16 +33,15 @@ const styles = {
   content: {
     display: "flex",
     flex: 1,
-    paddingTop :"50px"
   },
   body: {
     flex: 1,
-    backgroundColor: "#ffff", 
-    paddingLeft:"50px"
+    backgroundColor: "#ffff",
+    padding: "50px 0px 0px 50px",
   },
   button: {
-    width  : "310px",
-    height:"57px",
+    width: "310px",
+    height: "57px",
     background: "#0B66EF",
     color: "#fff",
     border: "none",
@@ -51,7 +50,7 @@ const styles = {
     fontSize: "33px", // Larger button text
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
     margin: "20px",
-    fontWeight:"600"
+    fontWeight: "600",
   },
 };
 

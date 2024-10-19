@@ -26,7 +26,7 @@ const styles = {
   },
   menu: {
     listStyleType: "none",
-    padding: 0,
+    padding: "50px 0 0 0 ",
     cursor: "pointer",
     display: "flex",
     flexDirection: "column",
@@ -41,9 +41,9 @@ const styles = {
   },
   svgIcon: {
     left: "10px",
-    width: "43px", 
+    width: "43px",
     height: "43px",
-    pointerEvents: "none", 
+    pointerEvents: "none",
   },
 };
 

@@ -7,11 +7,23 @@ const Header = () => {
         <img src={logo} alt="Logo" style={styles.logo} />
       </div>
       <div style={styles.contactSection}>
-        <span style={{ margin: "0px", fontSize: "28px", fontFamily: 'DM Sans, sans-serif', color: "#576474", fontWeight: "500" }}>Contact</span>
+        <span
+          style={{
+            margin: "0px",
+            fontSize: "28px",
+            fontFamily: "DM Sans, sans-serif",
+            color: "#576474",
+            fontWeight: "500",
+          }}
+        >
+          Contact
+        </span>
         <div style={styles.user}>
           <div style={styles.userCircle}></div>
           <select style={styles.dropdown}>
-          <option value="your-name" style={styles.option}>Your Name</option>
+            <option value="your-name" style={styles.option}>
+              Your Name
+            </option>
           </select>
         </div>
       </div>
@@ -37,7 +49,7 @@ const styles = {
   },
   logo: {
     height: "43px",
-    width:"165px",
+    width: "165px",
     marginRight: "10px",
   },
 
@@ -49,7 +61,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     marginLeft: "20px",
-    border: "1.24px solid #576474", 
+    border: "1.24px solid #576474",
     padding: "7px 12px",
     borderRadius: "8px",
   },
@@ -69,8 +81,11 @@ const styles = {
     outline: "none",
   },
   option: {
-    fontSize: "16px",
+    fontSize: "19.9px", // Adjusted as per the requirement
     fontFamily: "DM Sans, sans-serif",
+    fontWeight: 400,
+    lineHeight: "25.91px",
+    textAlign: "left",
     color: "#6A6A6A",
   },
 };
