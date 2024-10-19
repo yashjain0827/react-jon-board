@@ -7,7 +7,7 @@ const Header = () => {
         <img src={logo} alt="Logo" style={styles.logo} />
       </div>
       <div style={styles.contactSection}>
-        <span style={{ fontSize: "30px" }}>Contact</span>
+        <span style={{ fontSize: "36px" , fontFamily: 'DM Sans, sans-serif', color: "#576474", fontWeight:"500"}}>Contact</span>
       </div>
     </header>
   );
@@ -31,6 +31,7 @@ const styles = {
   logo: {
     height: "100%",
     marginRight: "10px",
+    height: "43px",
   },
 
   contactSection: {

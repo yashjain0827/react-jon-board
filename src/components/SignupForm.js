@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SignupHeader from "./SignupHeader";
+import UserIcon from "../img/user.svg";
+import PhoneIcon from "../img/Vector.svg";
+import EmailIcon from "../img/mail.svg";
+import GroupsIcon from "../img/groups.svg";
 
 const SignupForm = () => {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -122,16 +126,14 @@ const SignupForm = () => {
       <div style={styles.pageContainer}>
         <div style={styles.textContainer}>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley.
+            Lorem Ipsum is simply dummy text of the printing and  typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
           </p>
         </div>
 
         <div style={styles.formContainer}>
           <form onSubmit={handleSubmit} style={styles.form}>
-            <h2 style={{ margin: "10px" }}>Sign Up</h2>
-            <p style={{ margin: "10px" }}>Lorem ipsum is simply dummy text</p>
+            <h2 style={{ margin: "0px", fontSize: "32px", fontFamily: 'DM Sans, sans-serif', color: "#000000", fontWeight: "600" }}>Sign Up</h2>
+            <p style={{ margin: "5px", fontSize: "16px", fontFamily: 'DM Sans, sans-serif', color: "#292929B2", fontWeight: "500" }}>Lorem ipsum is simply dummy text</p>
 
             {/* Name Input with Icon */}
             <div style={styles.inputWrapper}>
@@ -143,7 +145,7 @@ const SignupForm = () => {
                 value={formData.name}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
-              <i className="fa-regular fa-user" style={styles.icon}></i>
+              <img src={UserIcon} alt="User Icon" style={styles.svgIcon} />
             </div>
             {errors.name && <div style={styles.error}>{errors.name}</div>}
 
@@ -157,7 +159,7 @@ const SignupForm = () => {
                 value={formData.phone}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
-              <i className="fa-solid fa-phone" style={styles.icon}></i>
+              <img src={PhoneIcon} alt="Phone Icon" style={styles.svgIcon} />
             </div>
             {errors.phone && <div style={styles.error}>{errors.phone}</div>}
 
@@ -171,8 +173,8 @@ const SignupForm = () => {
                 value={formData.companyName}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
-              <i className="fa-solid fa-building" style={styles.icon}></i>
-            </div>
+              <img src={UserIcon} alt="User Icon" style={styles.svgIcon} />
+              </div>
             {errors.companyName && <div style={styles.error}>{errors.companyName}</div>}
 
             {/* Company Email Input with Icon */}
@@ -185,7 +187,7 @@ const SignupForm = () => {
                 value={formData.email}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
-              <i className="fa-regular fa-envelope" style={styles.icon}></i>
+              <img src={EmailIcon} alt="Email Icon" style={styles.svgIcon} />
             </div>
             {errors.email && <div style={styles.error}>{errors.email}</div>}
 
@@ -199,16 +201,16 @@ const SignupForm = () => {
                 value={formData.employeeSize}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
-              <i className="fa-solid fa-users" style={styles.icon}></i>
+              <img src={GroupsIcon} alt="Users Icon" style={styles.svgIcon} />
             </div>
             {errors.employeeSize && <div style={styles.error}>{errors.employeeSize}</div>}
 
-            <p style={{ marginTop: "10px" }}>
+            <p  style={{ marginTop: "10px", fontSize: "16px", fontFamily: 'DM Sans, sans-serif', color: "#292929B2", fontWeight: "700",justifyContent:"center" ,textAlign:'center'}}>
               By clicking on the proceed you will accept our{" "}
             </p>
-            <p style={{ margin: "0px" }}>
-              <a href="#" style={{ textDecoration: "none" }}>Terms</a> &{" "}
-              <a href="#" style={{ textDecoration: "none" }}>Conditions</a>
+            <p style={{ marginTop: "-10px", fontSize: "16px", fontFamily: 'DM Sans, sans-serif', color: "#292929B2", fontWeight: "700",justifyContent:"center" ,textAlign:'center'}}>
+              <a href="#" style={{ textDecoration: "none", color: "#0B66EFB2" }}>Terms</a> &{" "}
+              <a href="#" style={{ textDecoration: "none", color: "#0B66EFB2"}}>Conditions</a>
             </p>
 
             <button type="submit" style={styles.button}>Proceed</button>
@@ -235,11 +237,15 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     textAlign: "left",
-    fontSize: "26px",
-    color: "#333",
+    fontSize: "22.24px",
+    color: "#292929B2",
     width: "50%",
     margin: "auto",
+    fontFamily: "'DM Sans', sans-serif", // Enclose in quotes and use fallback font
+    fontWeight: 500,
+    lineHeight: "28.95px",
   },
+
   formContainer: {
     width: "50%",
     display: "flex",
@@ -265,9 +271,12 @@ const styles = {
     paddingLeft: "40px", // Extra padding for the icon
     borderRadius: "4px",
     border: "1px solid #ccc",
-    fontSize: "14px",
-    backgroundColor: "rgb(238 238 238)",
+    fontSize: "25px",
+    backgroundColor: "#F4F4F4",
     width: "90%",
+    fontFamily: "DM Sans, sans-serif",
+    color: "#535353",
+    fontWeight: "400"
   },
   error: {
     color: "red",
@@ -276,27 +285,30 @@ const styles = {
   button: {
     margin: "10px 0px",
     padding: "10px",
-    backgroundColor: "#007bff",
-    color: "#fff",
+    backgroundColor: "#0B66EF",
+    color: "#FFFFFF",
     border: "none",
     borderRadius: "4px",
     cursor: "pointer",
     width: "100%",
+    fontSize:"24px",
+    fontWeight:"700"
   },
-  icon: {
+  inputWrapper: {
+    position: "relative",
+    marginBottom: "20px",
+    width: "100%",
+  },
+  svgIcon: {
     position: "absolute",
     left: "10px",
     top: "50%",
     transform: "translateY(-50%)",
-    pointerEvents: "none", // Prevents icon from blocking input
-    fontSize: "18px",
-    color: "#666",
+    width: "18px", 
+    height: "18px",
+    pointerEvents: "none", 
   },
-  inputWrapper: {
-    position: "relative",
-    marginBottom: "10px",
-    width: "100%",
-  },
+
 };
 
 export default SignupForm;
