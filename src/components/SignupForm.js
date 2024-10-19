@@ -19,6 +19,7 @@ const SignupForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const validate = () => {
     const newErrors = {};
@@ -52,6 +53,8 @@ const SignupForm = () => {
     e.preventDefault();
 
     if (validate()) {
+      setIsLoading(true); // Start loading
+
       try {
         const signupResponse = await axios.post(
           "http://localhost:5000/auth/signup",
@@ -129,6 +132,8 @@ const SignupForm = () => {
           console.log("Registration failed:", signupError);
           alert("Registration failed. Please try again.");
         }
+      } finally {
+        setIsLoading(false); // Stop loading
       }
     }
   };
@@ -283,8 +288,12 @@ const SignupForm = () => {
               </a>
             </p>
 
-            <button type="submit" style={styles.button}>
-              Proceed
+            <button type="submit" style={styles.button} disabled={isLoading}>
+              {isLoading ? (
+                <div className="loader" style={styles.loader}></div>
+              ) : (
+                "Proceed"
+              )}
             </button>
           </form>
         </div>
@@ -365,6 +374,9 @@ const styles = {
     width: "100%",
     fontSize: "24px",
     fontWeight: "700",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   inputWrapper: {
     position: "relative",
@@ -379,6 +391,18 @@ const styles = {
     width: "18px",
     height: "18px",
     pointerEvents: "none",
+  },
+  loader: {
+    border: "4px solid #f3f3f3",
+    borderTop: "4px solid #3498db",
+    borderRadius: "50%",
+    width: "24px",
+    height: "24px",
+    animation: "spin 1s linear infinite",
+  },
+  "@keyframes spin": {
+    "0%": { transform: "rotate(0deg)" },
+    "100%": { transform: "rotate(360deg)" },
   },
 };
 
