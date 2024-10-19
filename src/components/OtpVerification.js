@@ -19,18 +19,13 @@ const OtpVerification = () => {
   const handleEmailVerify = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token"); 
+      const token = localStorage.getItem("token");
       const response = await axios.post(
         "http://localhost:5000/email/verify-otp",
         { otp: emailOtp, medium: "email" },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("🚀 ~ handleEmailVerify ~ response:", response)
-  
+
       if (response?.data?.message === "Email verified successfully") {
         setEmailVerified(true);
       }
@@ -38,20 +33,17 @@ const OtpVerification = () => {
       console.log("Error verifying email OTP:", error);
     }
   };
-  
+
   const handleMobileVerify = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token"); 
+      const token = localStorage.getItem("token");
       const response = await axios.post(
         "http://localhost:5000/email/verify-otp",
         { otp: mobileOtp, medium: "phone" },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        }
-      );  
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
       if (response?.data?.message === "Phone number verified successfully") {
         setMobileVerified(true);
       }
@@ -59,7 +51,6 @@ const OtpVerification = () => {
       console.log("Error verifying mobile OTP:", error);
     }
   };
-  
 
   return (
     <div>
@@ -70,16 +61,18 @@ const OtpVerification = () => {
           <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley.
+            ever since the 1500s.
           </p>
         </div>
 
         <div style={styles.formContainer}>
           <form style={styles.form}>
-            <h2 style={{ margin: "0px 0px 10px 0px  " }}>Sign Up</h2>
-            <p style={{ margin: "0px 0px 10px 0px" }}>
-              lorem ipsam is simply dummy text
+            <h2 style={{ margin: "0 0 10px 0" }}>Verify OTP</h2>
+            <p style={{ margin: "0 0 10px 0" }}>
+              Please enter the OTP sent to your email and phone.
             </p>
+
+            {/* Email OTP Input */}
             <div style={styles.inputWrapper}>
               <input
                 type="text"
@@ -90,15 +83,18 @@ const OtpVerification = () => {
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
               <i className="fa-regular fa-user" style={styles.icon}></i>
+              {emailVerified && (
+                <i className="fa-solid fa-check" style={styles.successIcon}></i>
+              )}
             </div>
 
-            <button
-              onClick={handleEmailVerify}
-              disabled={emailVerified}
-              style={styles.button}
-            >
-              {emailVerified ? "Verified" : "Verify"}
-            </button>
+            {!emailVerified && (
+              <button onClick={handleEmailVerify} style={styles.button}>
+                Verify Email OTP
+              </button>
+            )}
+
+            {/* Mobile OTP Input */}
             <div style={styles.inputWrapper}>
               <input
                 type="text"
@@ -109,15 +105,16 @@ const OtpVerification = () => {
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
               <i className="fa-regular fa-user" style={styles.icon}></i>
+              {mobileVerified && (
+                <i className="fa-solid fa-check" style={styles.successIcon}></i>
+              )}
             </div>
 
-            <button
-              onClick={handleMobileVerify}
-              disabled={mobileVerified}
-              style={styles.button}
-            >
-              {mobileVerified ? "Verified" : "Verify"}
-            </button>
+            {!mobileVerified && (
+              <button onClick={handleMobileVerify} style={styles.button}>
+                Verify Mobile OTP
+              </button>
+            )}
           </form>
         </div>
       </div>
@@ -168,20 +165,16 @@ const styles = {
   },
   input: {
     padding: "10px",
-    paddingLeft: "40px", // Extra padding for the icon
+    paddingLeft: "40px",
     borderRadius: "4px",
     border: "1px solid #ccc",
     fontSize: "14px",
     backgroundColor: "rgb(238 238 238)",
     width: "88%",
   },
-  error: {
-    color: "red",
-    fontSize: "12px",
-  },
   button: {
-    margin: "0px 0px 20px 0px ",
-    padding: "10px 0px ",
+    margin: "10px 0",
+    padding: "10px",
     backgroundColor: "#007bff",
     color: "#fff",
     border: "none",
@@ -194,9 +187,20 @@ const styles = {
     left: "10px",
     top: "50%",
     transform: "translateY(-50%)",
-    pointerEvents: "none", // Prevents icon from blocking input
+    pointerEvents: "none",
     fontSize: "18px",
     color: "#666",
+  },
+  successIcon: {
+    position: "absolute",
+    right: "10px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    fontSize: "18px",
+    color: "white",
+    backgroundColor: "green",
+    borderRadius: "50%",
+    padding: "5px",
   },
   inputWrapper: {
     position: "relative",
