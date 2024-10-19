@@ -2,31 +2,75 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header"; // Common Header Component
 import Sidebar from "../components/Sidebar"; // Common Sidebar Component
+import DateIcon from "../img/date.svg";
+import DropIcon from "../img/dropdown.svg";
+import axios from "axios";
 
 const CreateInterview = () => {
   const navigate = useNavigate();
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [experienceLevel, setExperienceLevel] = useState("");
-  const [candidateEmail, setCandidateEmail] = useState("");
+  const [candidateEmails, setCandidateEmails] = useState([]);
+  const [candidateEmail, setCandidateEmail] = useState([]);
   const [endDate, setEndDate] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleAddEmail = (e) => {
+    if (e.key === "Enter" && candidateEmail) {
+      setCandidateEmails([...candidateEmails, candidateEmail]);
+      setCandidateEmail("");
+      e.preventDefault();
+    }
+  };
+
+  const handleRemoveEmail = (index) => {
+    setCandidateEmails(candidateEmails.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      jobTitle,
-      jobDescription,
+
+    const token = localStorage.getItem("token"); 
+    const decodedToken = token ? JSON.parse(atob(token.split('.')[1])) : null;
+    const companyId = decodedToken ? decodedToken.companyId : null;
+
+    if (!companyId) {
+      console.error("Company ID is not available.");
+      return;
+    }
+
+    const jobData = {
+      title: jobTitle,
+      description: jobDescription,
       experienceLevel,
-      candidateEmail,
       endDate,
-    });
+      companyId,
+      candidates: candidateEmails.map((email) => ({ email })),
+    };
+
+    try {
+      const response = await axios.post("http://localhost:5000/job/create", jobData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Job created successfully:", response.data);
+      if (response?.data) {
+        alert("Job created successfully!");
+        navigate("/dashboard");
+
+      }
+    } catch (error) {
+      alert("Error creating job: " + (error.response?.data?.message || "Please try again later."));
+    }
   };
 
   return (
     <div style={styles.page}>
-      <Header /> {/* Common Header */}
+      <Header />
       <div style={styles.contentContainer}>
-        <Sidebar /> {/* Common Sidebar */}
+        <Sidebar />
         <main style={styles.main}>
           <div style={styles.formContainer}>
             <form style={styles.form} onSubmit={handleSubmit}>
@@ -53,40 +97,68 @@ const CreateInterview = () => {
 
               <div style={styles.formGroup}>
                 <label style={styles.label}>Experience Level</label>
-                <select
-                  style={styles.select}
-                  value={experienceLevel}
-                  onChange={(e) => setExperienceLevel(e.target.value)}
-                >
-                  <option value="">Select Experience Level</option>
-                  <option value="junior">Junior</option>
-                  <option value="mid">Mid</option>
-                  <option value="senior">Senior</option>
-                </select>
+                <div style={{ position: "relative" }}>
+                  <select
+                    style={styles.select}
+                    value={experienceLevel}
+                    onChange={(e) => setExperienceLevel(e.target.value)}
+                  >
+                    <option value="">Select Experience Level</option>
+                    <option value="Entry">Entry</option>
+                    <option value="Mid">Mid</option>
+                    <option value="Senior">Senior</option>
+                  </select>
+                  <img src={DropIcon} alt="Dropdown Icon" style={styles.svgIcon} />
+                </div>
               </div>
+
 
               <div style={styles.formGroup}>
                 <label style={styles.label}>Add Candidate</label>
-                <input
-                  style={styles.input}
-                  type="email"
-                  placeholder="xyz@gmail.com"
-                  value={candidateEmail}
-                  onChange={(e) => setCandidateEmail(e.target.value)}
-                />
+                <div style={styles.emailInputContainer}>
+                  <div style={styles.tagInput}>
+                    {candidateEmails.map((email, index) => (
+                      <span key={index} style={styles.emailTag}>
+                        <div style={styles.userCircle}></div>
+                        {email}
+                        <span
+                          style={styles.removeEmailTag}
+                          onClick={() => handleRemoveEmail(index)}
+                        >
+                          &times;
+                        </span>
+                      </span>
+                    ))}
+                    <input
+                      style={styles.emailInput}
+                      type="email"
+                      placeholder={candidateEmail ? "Enter the email" : ""}
+                      value={candidateEmail}
+                      onChange={(e) => setCandidateEmail(e.target.value)}
+                      onKeyDown={handleAddEmail}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div style={styles.formGroup}>
                 <label style={styles.label}>End Date</label>
-                <input
-                  style={styles.input}
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                />
+                <div style={{ position: "relative" }}>
+                  <input
+                    style={{ ...styles.input }}
+                    type="text"
+                    placeholder="Select a Date"
+                    value={endDate}
+                    onFocus={(e) => (e.target.type = "date")}
+                    onBlur={(e) => (e.target.type = "text")}
+                    onChange={(e) => setEndDate(e.target.value)}
+                  />
+                  <img src={DateIcon} alt="User Icon" style={styles.svgIcon} />
+                </div>
+
               </div>
 
-              <button type="submit" style={styles.submitButton}>
+              <button type="submit" style={{ ...styles.submitButton, alignSelf: "flex-end" }}>
                 Send
               </button>
             </form>
@@ -111,65 +183,138 @@ const styles = {
   main: {
     flex: 1,
     display: "flex",
-    alignItems: "flex-start", // Align content to the top
+    alignItems: "flex-start",
   },
   formContainer: {
     backgroundColor: "#fff",
-    padding: "20px 30px", // Modified padding for form container
-    width: "70%", // Modified width for larger form size
-    borderRadius: "8px", // Rounded corners for form container
+    padding: "20px 30px",
+    width: "70%",
+    borderRadius: "8px",
   },
   form: {
     display: "flex",
     flexDirection: "column",
+    margin: "80px"
   },
   formGroup: {
     marginBottom: "20px",
     display: "flex",
-    justifyContent: "space-between", // Ensures label and input are spaced
-    alignItems: "center", // Align label and input on the same line
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   label: {
-    fontSize: "16px",
-    color: "#333",
-    width: "25%", // Adjusted to give space to the label
-    textAlign: "right", // Align label text to the right
+    fontSize: "32px",
+    color: "#000000",
+    textAlign: "right",
     paddingRight: "10px",
+    fontWeight: "400",
+    fontFamily: 'DM Sans, sans-serif'
   },
   input: {
-    padding: "10px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    fontSize: "16px",
-    width: "70%", // Adjusted input width to match the layout
+    padding: "10px 0px 10px 40px",
+    borderRadius: "10px",
+    border: "1px solid #0B66EF",
+    fontSize: "24px",
+    width: "653px",
+    height: "50px",
+    color: "#535353B2",
+    fontFamily: 'DM Sans, sans-serif'
+
   },
   textarea: {
-    width: "70%", // Same width as input for consistency
-    padding: "10px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    fontSize: "16px",
-    minHeight: "80px",
+    width: "653px",
+    padding: "20px 0px 20px 40px",
+    borderRadius: "10px",
+    border: "1px solid #D0D0D0",
+    fontSize: "24px",
+    height: "270px",
+    color: "#535353B2",
+    fontFamily: 'DM Sans, sans-serif',
   },
   select: {
-    width: "73%", // Same width for select input
-    padding: "10px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    fontSize: "16px",
+    width: "695px",
+    height: "70px",
+    padding: "10px 0px 10px 40px",
+    borderRadius: "10px",
+    border: "1px solid #D0D0D0",
+    fontSize: "24px",
     backgroundColor: "#ffff",
+    fontFamily: 'DM Sans, sans-serif',
+    fontWeight: "400",
+    color: "#535353B2"
   },
   submitButton: {
     padding: "10px",
-    backgroundColor: "#007bff",
+    backgroundColor: "#0B66EF",
     color: "#fff",
     border: "none",
-    borderRadius: "4px",
+    borderRadius: "10px",
     cursor: "pointer",
-    fontSize: "16px",
-    marginTop: "20px", // Adjusted margin for better spacing
-    width: "150px", // Set a fixed width for button
-    alignSelf: "center", // Center the button within the form
+    fontSize: "24px",
+    marginTop: "20px",
+    width: "164px",
+    height: "49px",
+    alignSelf: "center",
+    fontWeight: "700",
+    fontFamily: 'DM Sans, sans-serif',
+
+  },
+
+  svgIcon: {
+    position: "absolute",
+    right: "10px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: "18px",
+    height: "20px",
+    paddingRight: "15px"
+  },
+  emailInputContainer: {
+    display: "flex",
+    flexDirection: "column",
+    width: "695px",
+  },
+  tagInput: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    padding: "8px",
+    border: "1px solid #0B66EF",
+    borderRadius: "10px",
+    minHeight: "50px",
+  },
+  emailTag: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    padding: "8px 12px",
+    borderRadius: "20px",
+    margin: "4px",
+    fontSize: "20px",
+    border: "1px solid #D0D0D0",
+    color: "#535353B2",
+    fontWeight: "400"
+  },
+  removeEmailTag: {
+    marginLeft: "8px",
+    cursor: "pointer",
+    color: "#919191",
+    fontWeight: "bold",
+  },
+  emailInput: {
+    flex: 1,
+    border: "none",
+    outline: "none",
+    fontSize: "18px",
+    marginLeft: "8px",
+    minWidth: "150px",
+  },
+  userCircle: {
+    width: "27px",
+    height: "27px",
+    borderRadius: "50%",
+    backgroundColor: "#DADADA",
+    marginRight: "10px",
   },
 };
 
