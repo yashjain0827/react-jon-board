@@ -60,11 +60,12 @@ const SignupForm = () => {
           "http://localhost:5000/auth/signup",
           formData
         );
-        console.log("🚀 ~ handleSubmit ~ signupResponse:", signupResponse);
 
         if (signupResponse.data) {
-          const token = signupResponse.data.token;
+          const token = signupResponse?.data?.token;
+          const name = signupResponse?.data?.company?.name;
           localStorage.setItem("token", token);
+          localStorage.setItem("name", name);
 
           const headers = {
             Authorization: `Bearer ${token}`,

@@ -1,6 +1,38 @@
-import React from "react";
 import logo from "../img/cuvette.svg";
+import React, { useState, useEffect } from "react";
+
 const Header = () => {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const storedName = localStorage.getItem("name");
+    setUsername(storedName || "Your Name");
+  }, []);
+
+  const handleDropdownClick = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem("token"); 
+
+    try {
+      await fetch("http://localhost:5000/auth/logout", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      localStorage.removeItem("name");
+      localStorage.removeItem("token");
+
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
   return (
     <header style={styles.header}>
       <div style={styles.logoSection}>
@@ -18,13 +50,16 @@ const Header = () => {
         >
           Contact
         </span>
-        <div style={styles.user}>
+        <div style={styles.user} onClick={handleDropdownClick}>
           <div style={styles.userCircle}></div>
-          <select style={styles.dropdown}>
-            <option value="your-name" style={styles.option}>
-              Your Name
-            </option>
-          </select>
+          <div style={styles.username}>{username}</div>
+          {showDropdown && (
+            <div style={styles.dropdownMenu}>
+              <div onClick={handleLogout} style={styles.logoutOption}>
+                Logout
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </header>
@@ -87,6 +122,24 @@ const styles = {
     lineHeight: "25.91px",
     textAlign: "left",
     color: "#6A6A6A",
+  },
+  dropdownMenu: {
+    position: "absolute",
+    backgroundColor: "#fff",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+    borderRadius: "5px",
+    marginTop: "10px",
+  },
+  logoutOption: {
+    padding: "15px 50px",
+    cursor: "pointer",
+    color: "#fff",
+    backgroundColor: "#0B66EF",
+    border: "none",
+    borderRadius: "8.32px",
+    cursor: "pointer",
+    fontSize: "16px", 
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", 
   },
 };
 
