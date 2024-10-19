@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header"; // Common Header Component
-import Sidebar from "../components/Sidebar"; // Common Sidebar Component
+import Header from "../components/Header"; 
+import Sidebar from "../components/Sidebar";
 import DateIcon from "../img/date.svg";
 import DropIcon from "../img/dropdown.svg";
 import axios from "axios";
@@ -12,8 +12,9 @@ const CreateInterview = () => {
   const [jobDescription, setJobDescription] = useState("");
   const [experienceLevel, setExperienceLevel] = useState("");
   const [candidateEmails, setCandidateEmails] = useState([]);
-  const [candidateEmail, setCandidateEmail] = useState([]);
+  const [candidateEmail, setCandidateEmail] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [loading, setLoading] = useState(false); 
 
   const handleAddEmail = (e) => {
     if (e.key === "Enter" && candidateEmail) {
@@ -29,6 +30,7 @@ const CreateInterview = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); 
 
     const token = localStorage.getItem("token");
     const decodedToken = token ? JSON.parse(atob(token.split(".")[1])) : null;
@@ -36,6 +38,7 @@ const CreateInterview = () => {
 
     if (!companyId) {
       console.error("Company ID is not available.");
+      setLoading(false);
       return;
     }
 
@@ -69,6 +72,8 @@ const CreateInterview = () => {
         "Error creating job: " +
           (error.response?.data?.message || "Please try again later.")
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,6 +93,7 @@ const CreateInterview = () => {
                   placeholder="Enter Job Title"
                   value={jobTitle}
                   onChange={(e) => setJobTitle(e.target.value)}
+                  disabled={loading}
                 />
               </div>
 
@@ -98,6 +104,7 @@ const CreateInterview = () => {
                   placeholder="Enter Job Description"
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
+                  disabled={loading} 
                 />
               </div>
 
@@ -168,9 +175,14 @@ const CreateInterview = () => {
 
               <button
                 type="submit"
-                style={{ ...styles.submitButton, alignSelf: "flex-end" }}
+                style={styles.submitButton }
+                disabled={loading} 
               >
-                Send
+                {loading ? (
+                  <div className="loader"></div>
+                ) : (
+                  "Send"
+                )}
               </button>
             </form>
           </div>
@@ -212,7 +224,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "944px", // Fixed typo from "widthe" to "width"
+    width: "944px", 
   },
   label: {
     fontSize: "32px",
@@ -224,7 +236,7 @@ const styles = {
     width: "291px",
   },
   input: {
-    padding: "10px 20px ", // Adjust padding for icon space
+    padding: "10px 20px ",
     borderRadius: "10px",
     border: "1px solid #0B66EF",
     fontSize: "24px",
@@ -232,25 +244,25 @@ const styles = {
     height: "50px",
     color: "#535353B2",
     fontFamily: "DM Sans, sans-serif",
-    margin: "20px 0", // Uniform margin
-    boxSizing: "border-box", // Prevents padding/border from affecting width
+    margin: "20px 0",
+    boxSizing: "border-box",
   },
   input2: {
-    padding: "10px 20px ", // Adjust padding for icon space
+    padding: "10px 20px ", 
     borderRadius: "10px",
     border: "1px solid #0B66EF",
     fontSize: "24px",
-    width: "100%", // Ensure it fills the wrapper
+    width: "100%",
     height: "50px",
     color: "#535353B2",
     fontFamily: "DM Sans, sans-serif",
     margin: "20px 0",
     boxSizing: "border-box",
     cursor: "pointer",
-    appearance: "none", // Ensure consistency across browsers
+    appearance: "none", 
   },
   textarea: {
-    padding: "10px 20px ", // Adjust padding for icon space
+    padding: "10px 20px ",
     borderRadius: "10px",
     border: "1px solid #D0D0D0",
     fontSize: "24px",
@@ -258,26 +270,26 @@ const styles = {
     height: "270px",
     color: "#535353B2",
     fontFamily: "DM Sans, sans-serif",
-    margin: "20px 0", // Uniform margin
+    margin: "20px 0", 
     boxSizing: "border-box",
-    resize: "none", // Optional to prevent resizing
+    resize: "none",
   },
   select: {
-    appearance: "none", // Hide default arrow
+    appearance: "none", 
     WebkitAppearance: "none",
     MozAppearance: "none",
     height: "70px",
-    padding: "10px 20px ", // Adjust padding for icon space
+    padding: "10px 20px ", 
     borderRadius: "10px",
     border: "1px solid #D0D0D0",
     fontSize: "24px",
-    width: "100%", // Ensure it fills the wrapper
+    width: "100%", 
     backgroundColor: "#ffff",
     fontFamily: "DM Sans, sans-serif",
     fontWeight: "400",
     color: "#535353B2",
     boxSizing: "border-box",
-    cursor: "pointer", // Optional to ensure it looks clickable
+    cursor: "pointer", 
   },
 
   submitButton: {
@@ -295,12 +307,13 @@ const styles = {
     fontWeight: "700",
     fontFamily: "DM Sans, sans-serif",
   },
+
   svgIcon: {
     position: "absolute",
-    right: "15px", // Adjust for padding
+    right: "15px",
     top: "50%",
-    transform: "translateY(-50%)", // Center vertically
-    pointerEvents: "none", // Prevent interference with clicks
+    transform: "translateY(-50%)",
+    pointerEvents: "none",
     width: "18px",
     height: "20px",
   },
@@ -352,6 +365,18 @@ const styles = {
     backgroundColor: "#DADADA",
     marginRight: "10px",
   },
+  loader: {
+    border: "4px solid rgba(255, 255, 255, 0.3)", 
+    borderRadius: "50%",
+    borderTop: "4px solid #ffffff", 
+    width: "16px",
+    height: "16px",
+    animation: "spin 1s linear infinite",
+  },
+  '@keyframes spin': {
+    '0%': { transform: 'rotate(0deg)' },
+    '100%': { transform: 'rotate(360deg)' }
+  }
 };
 
 export default CreateInterview;
