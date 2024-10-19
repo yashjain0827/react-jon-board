@@ -36,20 +36,23 @@ const styles = {
   },
   body: {
     flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f9f9f9", // Background color for the main area
+    // display: "flex",
+    // justifyContent: "center",
+    // alignItems: "center",
+    backgroundColor: "#ffff", // Background color for the main area
   },
   button: {
     padding: "12px 24px",
-    backgroundColor: "#007bff",
+
+    background: "#0B66EF",
+
     color: "#fff",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
     fontSize: "16px", // Larger button text
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+    margin: "20px",
   },
 };
 

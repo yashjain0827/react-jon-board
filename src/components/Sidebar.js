@@ -19,9 +19,9 @@ const styles = {
   sidebar: {
     backgroundColor: "#fff",
     padding: "20px",
-    width: "60px", // Sidebar is narrower
+    width: "104px",
     height: "100vh",
-    boxShadow: "2px 0 5px rgba(0,0,0,0.1)",
+    borderRight: "1px solid #C5C5C5",
   },
   menu: {
     listStyleType: "none",
@@ -29,14 +29,14 @@ const styles = {
     cursor: "pointer",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center", // Center the menu items
+    alignItems: "center",
   },
   menuItem: {
-    marginBottom: "20px", // Space between items
+    marginBottom: "20px",
   },
   icon: {
-    width: "60px", // Adjust the size of the icons
-    height: "60px",
+    fontSize: "35.83px", // Controls icon size
+    color: "#576474",
   },
 };
 

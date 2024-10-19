@@ -21,18 +21,19 @@ const Header = () => {
 
 const styles = {
   header: {
+    height: "120px",
     backgroundColor: "#ffff",
     padding: "10px 40px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "50px",
+    borderBottom: "1px solid #C5C5C5",
   },
   logoSection: {
     display: "flex",
     alignItems: "center",
-    height: "100%",
-    width: "100%",
+    width: "165px",
+    height: "43px",
   },
   logo: {
     height: "100%",
