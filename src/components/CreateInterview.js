@@ -256,8 +256,10 @@ const styles = {
     margin: "20px 0",
     boxSizing: "border-box",
     cursor: "pointer",
-    appearance: "none",
+    appearance: "none", // Remove default browser styling
+    position: "relative",
   },
+
   textarea: {
     padding: "10px 20px ",
     borderRadius: "10px",

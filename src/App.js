@@ -13,8 +13,8 @@ import SignupForm from "./components/SignupForm";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
-  // return token ? children : <Navigate to="/" />;
-  return children;
+  return token ? children : <Navigate to="/" />;
+  // return children;
 };
 
 const App = () => {
