@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header"; // Common Header Component
+import Sidebar from "../components/Sidebar"; // Common Sidebar Component
 
 const CreateInterview = () => {
   const navigate = useNavigate();
@@ -11,7 +13,6 @@ const CreateInterview = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log({
       jobTitle,
       jobDescription,
@@ -23,30 +24,11 @@ const CreateInterview = () => {
 
   return (
     <div style={styles.page}>
-      {/* Header */}
-      <header style={styles.header}>
-        <div style={styles.logo}>Covette</div>
-        <div style={styles.contact}>
-          <span>Contact</span>
-          <div style={styles.dropdown}>
-            <button style={styles.contactButton}>Your Name</button>
-          </div>
-        </div>
-      </header>
-
-      {/* Sidebar and Main Content */}
+      <Header /> {/* Common Header */}
       <div style={styles.contentContainer}>
-        {/* Sidebar */}
-        <aside style={styles.sidebar}>
-          <div style={styles.sidebarItem}>
-            <span style={styles.icon}>🏠</span>
-          </div>
-        </aside>
-
-        {/* Main Form Area */}
+        <Sidebar /> {/* Common Sidebar */}
         <main style={styles.main}>
           <div style={styles.formContainer}>
-            <h2 style={styles.title}>Create Interview</h2>
             <form style={styles.form} onSubmit={handleSubmit}>
               <div style={styles.formGroup}>
                 <label style={styles.label}>Job Title</label>
@@ -58,6 +40,7 @@ const CreateInterview = () => {
                   onChange={(e) => setJobTitle(e.target.value)}
                 />
               </div>
+
               <div style={styles.formGroup}>
                 <label style={styles.label}>Job Description</label>
                 <textarea
@@ -67,6 +50,7 @@ const CreateInterview = () => {
                   onChange={(e) => setJobDescription(e.target.value)}
                 />
               </div>
+
               <div style={styles.formGroup}>
                 <label style={styles.label}>Experience Level</label>
                 <select
@@ -80,6 +64,7 @@ const CreateInterview = () => {
                   <option value="senior">Senior</option>
                 </select>
               </div>
+
               <div style={styles.formGroup}>
                 <label style={styles.label}>Add Candidate</label>
                 <input
@@ -90,6 +75,7 @@ const CreateInterview = () => {
                   onChange={(e) => setCandidateEmail(e.target.value)}
                 />
               </div>
+
               <div style={styles.formGroup}>
                 <label style={styles.label}>End Date</label>
                 <input
@@ -99,16 +85,11 @@ const CreateInterview = () => {
                   onChange={(e) => setEndDate(e.target.value)}
                 />
               </div>
+
               <button type="submit" style={styles.submitButton}>
                 Send
               </button>
             </form>
-            <button
-              style={styles.backButton}
-              onClick={() => navigate("/dashboard")}
-            >
-              Back to Dashboard
-            </button>
           </div>
         </main>
       </div>
@@ -122,72 +103,21 @@ const styles = {
     flexDirection: "column",
     height: "100vh",
   },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "10px 20px",
-    backgroundColor: "#f9f9f9",
-    borderBottom: "1px solid #e0e0e0",
-  },
-  logo: {
-    fontSize: "24px",
-    fontWeight: "bold",
-    color: "#333",
-  },
-  contact: {
-    display: "flex",
-    alignItems: "center",
-  },
-  dropdown: {
-    marginLeft: "10px",
-  },
-  contactButton: {
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "none",
-    padding: "10px",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
   contentContainer: {
     display: "flex",
     flex: 1,
-  },
-  sidebar: {
-    width: "80px",
-    backgroundColor: "#fff",
-    borderRight: "1px solid #e0e0e0",
-    paddingTop: "20px",
-  },
-  sidebarItem: {
-    display: "flex",
-    justifyContent: "center",
-    padding: "10px 0",
-  },
-  icon: {
-    fontSize: "24px",
-    color: "#007bff",
+    backgroundColor: "#ffff",
   },
   main: {
     flex: 1,
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "20px",
+    alignItems: "flex-start", // Align content to the top
   },
   formContainer: {
     backgroundColor: "#fff",
-    padding: "40px",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    width: "500px",
-  },
-  title: {
-    textAlign: "center",
-    marginBottom: "20px",
-    fontSize: "24px",
-    color: "#333",
+    padding: "20px 30px", // Modified padding for form container
+    width: "70%", // Modified width for larger form size
+    borderRadius: "8px", // Rounded corners for form container
   },
   form: {
     display: "flex",
@@ -195,21 +125,26 @@ const styles = {
   },
   formGroup: {
     marginBottom: "20px",
+    display: "flex",
+    justifyContent: "space-between", // Ensures label and input are spaced
+    alignItems: "center", // Align label and input on the same line
   },
   label: {
-    marginBottom: "8px",
     fontSize: "16px",
     color: "#333",
+    width: "25%", // Adjusted to give space to the label
+    textAlign: "right", // Align label text to the right
+    paddingRight: "10px",
   },
   input: {
-    width: "100%",
     padding: "10px",
     borderRadius: "4px",
     border: "1px solid #ccc",
     fontSize: "16px",
+    width: "70%", // Adjusted input width to match the layout
   },
   textarea: {
-    width: "100%",
+    width: "70%", // Same width as input for consistency
     padding: "10px",
     borderRadius: "4px",
     border: "1px solid #ccc",
@@ -217,34 +152,24 @@ const styles = {
     minHeight: "80px",
   },
   select: {
-    width: "100%",
+    width: "73%", // Same width for select input
     padding: "10px",
     borderRadius: "4px",
     border: "1px solid #ccc",
     fontSize: "16px",
+    backgroundColor: "#ffff",
   },
   submitButton: {
-    padding: "12px 20px",
+    padding: "10px",
     backgroundColor: "#007bff",
     color: "#fff",
     border: "none",
     borderRadius: "4px",
     cursor: "pointer",
     fontSize: "16px",
-    marginTop: "10px",
-  },
-  backButton: {
-    padding: "10px 20px",
-    backgroundColor: "#6c757d",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    fontSize: "14px",
-    marginTop: "20px",
-    display: "block",
-    width: "100%",
-    textAlign: "center",
+    marginTop: "20px", // Adjusted margin for better spacing
+    width: "150px", // Set a fixed width for button
+    alignSelf: "center", // Center the button within the form
   },
 };
 

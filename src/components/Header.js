@@ -21,9 +21,9 @@ const Header = () => {
 
 const styles = {
   header: {
-    height: "120px",
+    height: "80px", // Adjusted to match the image
     backgroundColor: "#ffff",
-    padding: "10px 40px",
+    padding: "20px 40px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -48,8 +48,9 @@ const styles = {
     display: "flex",
     alignItems: "center",
     marginLeft: "20px",
-    border: "2px solid black",
-    padding: "5px",
+    border: "1px solid #ccc", // Light border as seen in the image
+    padding: "5px 10px", // Adjusted padding for tighter alignment
+    borderRadius: "8px",
   },
   userCircle: {
     width: "24px",
@@ -62,7 +63,9 @@ const styles = {
     padding: "5px",
     fontSize: "14px",
     border: "none",
-    backgroundColor: "#ffff",
+    backgroundColor: "transparent",
+    cursor: "pointer",
+    outline: "none",
   },
 };
 
