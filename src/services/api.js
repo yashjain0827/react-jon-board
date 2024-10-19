@@ -3,6 +3,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000";
 
-export const registerCompany = async (data) => {
-  return axios.post(`${API_URL}/api/register`, data);
-};
+router.post('/auth/signup', (req, res) => {
+  // Your signup logic here
+  res.status(200).json({ message: 'Signup successful' });
+});

@@ -1,41 +1,69 @@
-import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import SignupHeader from "./SignupHeader"; // Import the Header component
+import SignupHeader from "./SignupHeader";
 
 const SignupForm = () => {
   const navigate = useNavigate();
-
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      phone: "",
-      companyName: "",
-      email: "",
-      employeeSize: "",
-    },
-    validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
-      phone: Yup.string()
-        .matches(/^[0-9]{10}$/, "Invalid phone number")
-        .required("Phone is required"),
-      companyName: Yup.string().required("Company name is required"),
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      employeeSize: Yup.number().required("Employee size is required"),
-    }),
-    onSubmit: async (values) => {
-      try {
-        const response = await axios.post("/api/register", values);
-        alert("Registration successful! Please verify your email and phone.");
-        navigate("/verify-otp");
-      } catch (error) {
-        console.error("Registration failed:", error);
-        alert("Registration failed. Please try again.");
-      }
-    },
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    companyName: "",
+    email: "",
+    employeeSize: "",
   });
+
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (formData.name.length < 4) {
+      newErrors.name = "Name should have at least 4 characters";
+    }
+    if (!/^[6-9]\d{9}$/.test(formData.phone)) {
+      newErrors.phone = "Phone number must be a valid 10-digit Indian number starting with 6, 7, 8, or 9";
+    }
+    if (!formData.companyName) {
+      newErrors.companyName = "Company name is required";
+    }
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Invalid email";
+    }
+    if (formData.employeeSize < 1 || formData.employeeSize > 10000) {
+      newErrors.employeeSize = "Employee size must be between 1 and 10,000";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (validate()) {
+      try {
+        const response = await axios.post("http://localhost:5000/auth/signup", formData);
+        if(response.data){
+          alert("Registration successful! Please verify your email and phone.");
+          navigate("/verify-otp");
+        }
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          console.error("Registration failed:", error.response.data.message);
+          alert(`Registration failed: ${error.response.data.message}`);
+        } else {
+          console.error("Registration failed:", error);
+          alert("Registration failed. Please try again.");
+        }
+      }
+    }
+  };
 
   return (
     <div>
@@ -51,7 +79,7 @@ const SignupForm = () => {
         </div>
 
         <div style={styles.formContainer}>
-          <form onSubmit={formik.handleSubmit} style={styles.form}>
+          <form onSubmit={handleSubmit} style={styles.form}>
             <h2 style={{ margin: "10px" }}>Sign Up</h2>
             <p style={{ margin: "10px" }}>Lorem ipsum is simply dummy text</p>
 
@@ -61,15 +89,13 @@ const SignupForm = () => {
                 type="text"
                 name="name"
                 placeholder="Name"
-                onChange={formik.handleChange}
-                value={formik.values.name}
+                onChange={handleChange}
+                value={formData.name}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
               <i className="fa-regular fa-user" style={styles.icon}></i>
             </div>
-            {formik.errors.name && (
-              <div style={styles.error}>{formik.errors.name}</div>
-            )}
+            {errors.name && <div style={styles.error}>{errors.name}</div>}
 
             {/* Phone Input with Icon */}
             <div style={styles.inputWrapper}>
@@ -77,15 +103,13 @@ const SignupForm = () => {
                 type="text"
                 name="phone"
                 placeholder="Phone no."
-                onChange={formik.handleChange}
-                value={formik.values.phone}
+                onChange={handleChange}
+                value={formData.phone}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
               <i className="fa-solid fa-phone" style={styles.icon}></i>
             </div>
-            {formik.errors.phone && (
-              <div style={styles.error}>{formik.errors.phone}</div>
-            )}
+            {errors.phone && <div style={styles.error}>{errors.phone}</div>}
 
             {/* Company Name Input with Icon */}
             <div style={styles.inputWrapper}>
@@ -93,15 +117,13 @@ const SignupForm = () => {
                 type="text"
                 name="companyName"
                 placeholder="Company Name"
-                onChange={formik.handleChange}
-                value={formik.values.companyName}
+                onChange={handleChange}
+                value={formData.companyName}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
               <i className="fa-solid fa-building" style={styles.icon}></i>
             </div>
-            {formik.errors.companyName && (
-              <div style={styles.error}>{formik.errors.companyName}</div>
-            )}
+            {errors.companyName && <div style={styles.error}>{errors.companyName}</div>}
 
             {/* Company Email Input with Icon */}
             <div style={styles.inputWrapper}>
@@ -109,15 +131,13 @@ const SignupForm = () => {
                 type="email"
                 name="email"
                 placeholder="Company Email"
-                onChange={formik.handleChange}
-                value={formik.values.email}
+                onChange={handleChange}
+                value={formData.email}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
               <i className="fa-regular fa-envelope" style={styles.icon}></i>
             </div>
-            {formik.errors.email && (
-              <div style={styles.error}>{formik.errors.email}</div>
-            )}
+            {errors.email && <div style={styles.error}>{errors.email}</div>}
 
             {/* Employee Size Input with Icon */}
             <div style={styles.inputWrapper}>
@@ -125,32 +145,23 @@ const SignupForm = () => {
                 type="number"
                 name="employeeSize"
                 placeholder="Employee Size"
-                onChange={formik.handleChange}
-                value={formik.values.employeeSize}
+                onChange={handleChange}
+                value={formData.employeeSize}
                 style={{ ...styles.input, paddingLeft: "40px" }}
               />
               <i className="fa-solid fa-users" style={styles.icon}></i>
             </div>
-            {formik.errors.employeeSize && (
-              <div style={styles.error}>{formik.errors.employeeSize}</div>
-            )}
+            {errors.employeeSize && <div style={styles.error}>{errors.employeeSize}</div>}
 
             <p style={{ marginTop: "10px" }}>
               By clicking on the proceed you will accept our{" "}
             </p>
             <p style={{ margin: "0px" }}>
-              <a href="#" style={{ textDecoration: "none" }}>
-                Terms
-              </a>{" "}
-              &{" "}
-              <a href="#" style={{ textDecoration: "none" }}>
-                Conditions
-              </a>
+              <a href="#" style={{ textDecoration: "none" }}>Terms</a> &{" "}
+              <a href="#" style={{ textDecoration: "none" }}>Conditions</a>
             </p>
 
-            <button type="submit" style={styles.button}>
-              Proceed
-            </button>
+            <button type="submit" style={styles.button}>Proceed</button>
           </form>
         </div>
       </div>
