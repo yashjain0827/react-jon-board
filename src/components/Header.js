@@ -1,5 +1,7 @@
 import logo from "../img/cuvette.svg";
 import React, { useState, useEffect } from "react";
+import triangle from "../img/polygon.svg";
+import axiosInstance from "../services/api";
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -18,8 +20,7 @@ const Header = () => {
     const token = localStorage.getItem("token");
 
     try {
-      await fetch("http://localhost:5000/auth/logout", {
-        method: "GET",
+      await axiosInstance.get("/auth/logout", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -53,6 +54,7 @@ const Header = () => {
         <div style={styles.user} onClick={handleDropdownClick}>
           <div style={styles.userCircle}></div>
           <div style={styles.username}>{username}</div>
+          <img src={triangle} alt="Users Icon" style={styles.svgIcon} />
           {showDropdown && (
             <div style={styles.dropdownMenu}>
               <div onClick={handleLogout} style={styles.logoutOption}>
@@ -68,7 +70,7 @@ const Header = () => {
 
 const styles = {
   header: {
-    height: "80px", // Adjusted to match the image
+    height: "80px", 
     backgroundColor: "#ffff",
     padding: "20px 40px",
     display: "flex",
@@ -93,13 +95,14 @@ const styles = {
     alignItems: "center",
   },
   user: {
-    position: "relative", // Added to make dropdown relative to this div
+    position: "relative", 
     display: "flex",
     alignItems: "center",
     marginLeft: "20px",
     border: "1.24px solid #576474",
     padding: "7px 12px",
     borderRadius: "8px",
+    cursor:"pointer"
   },
   userCircle: {
     width: "31px",
@@ -117,7 +120,7 @@ const styles = {
     outline: "none",
   },
   option: {
-    fontSize: "19.9px", // Adjusted as per the requirement
+    fontSize: "19.9px", 
     fontFamily: "DM Sans, sans-serif",
     fontWeight: 400,
     lineHeight: "25.91px",
@@ -126,13 +129,13 @@ const styles = {
   },
   dropdownMenu: {
     position: "absolute",
-    top: "100%", // Places the dropdown right below the user div
-    left: "0", // Aligns the dropdown to the left of the user div
+    top: "100%", 
+    left: "0", 
     backgroundColor: "#fff",
     boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
     borderRadius: "5px",
     marginTop: "10px",
-    zIndex: 1, // Ensures it appears above other content
+    zIndex: 1, 
   },
   logoutOption: {
     padding: "15px 50px",
@@ -144,6 +147,21 @@ const styles = {
     fontSize: "16px",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
   },
+  svgIcon: {
+    left: "10px",
+    top: "50%",
+    width: "18px",
+    height: "18px",
+    pointerEvents: "none",
+    paddingLeft: "10px",
+    cursor:"pointer"
+  },
+  username :{
+    fontSize: "19.9px", 
+    fontFamily: "DM Sans, sans-serif",
+    fontWeight: 400,
+    color:"#6A6A6A"
+  }
 };
 
 export default Header;

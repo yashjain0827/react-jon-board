@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import SignupHeader from "./SignupHeader"; // Reusing the same header component
+import SignupHeader from "./SignupHeader"; 
+import axiosInstance from "../services/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -26,14 +27,14 @@ const Login = () => {
     e.preventDefault();
     if (validate()) {
       try {
-        const response = await axios.post("http://localhost:5000/auth/login", {
+        const response = await axiosInstance.post("/auth/login", {
           email,
         });
         console.log("🚀 ~ handleSubmit ~ response:", response);
 
         if (response.data) {
           alert("OTP has been sent to your email.");
-          navigate("/verify-otp"); // Redirect to OTP verification page
+          navigate("/verify-otp");
         }
       } catch (loginError) {
         console.log("Login failed:", loginError);
@@ -123,7 +124,7 @@ const styles = {
   },
   input: {
     padding: "10px",
-    paddingLeft: "40px", // Extra padding for the icon
+    paddingLeft: "40px", 
     borderRadius: "4px",
     border: "1px solid #ccc",
     fontSize: "14px",
@@ -149,7 +150,7 @@ const styles = {
     left: "10px",
     top: "50%",
     transform: "translateY(-50%)",
-    pointerEvents: "none", // Prevents icon from blocking input
+    pointerEvents: "none",
     fontSize: "18px",
     color: "#666",
   },

@@ -6,6 +6,7 @@ import UserIcon from "../img/user.svg";
 import PhoneIcon from "../img/Vector.svg";
 import EmailIcon from "../img/mail.svg";
 import GroupsIcon from "../img/groups.svg";
+import axiosInstance from "../services/api";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -53,13 +54,13 @@ const SignupForm = () => {
     e.preventDefault();
 
     if (validate()) {
-      setIsLoading(true); // Start loading
+      setIsLoading(true);
 
       try {
-        const signupResponse = await axios.post(
-          "http://localhost:5000/auth/signup",
+        const signupResponse = await axiosInstance.post(
+          "/auth/signup",
           formData
-        );
+        );        
 
         if (signupResponse.data) {
           const token = signupResponse?.data?.token;
@@ -73,8 +74,8 @@ const SignupForm = () => {
 
           // OTP to email
           try {
-            const emailOtpResponse = await axios.post(
-              "http://localhost:5000/email/send-otp",
+            const emailOtpResponse = await axiosInstance.post(
+              "/email/send-otp",
               {
                 medium: "email",
               },
@@ -94,8 +95,8 @@ const SignupForm = () => {
 
           // OTP to phone
           try {
-            const phoneOtpResponse = await axios.post(
-              "http://localhost:5000/email/send-otp",
+            const phoneOtpResponse = await axiosInstance.post(
+              "/email/send-otp",
               {
                 medium: "phone",
               },
@@ -350,7 +351,7 @@ const styles = {
   },
   input: {
     padding: "10px",
-    paddingLeft: "40px", // Extra padding for the icon
+    paddingLeft: "40px",
     borderRadius: "4px",
     border: "1px solid #ccc",
     fontSize: "25px",

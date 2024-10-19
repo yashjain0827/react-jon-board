@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import SignupHeader from "./SignupHeader"; // Import the Header component
+import SignupHeader from "./SignupHeader"; 
 import PhoneIcon from "../img/Vector.svg";
 import EmailIcon from "../img/mail.svg";
 import CheckCircle from "../img/check.svg";
+import axiosInstance from "../services/api";
 
 const OtpVerification = () => {
   const [emailOtp, setEmailOtp] = useState("");
@@ -22,11 +23,9 @@ const OtpVerification = () => {
   const handleEmailVerify = async (e) => {
     e.preventDefault();
     try {
-      setEmailVerified(true);
-
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:5000/email/verify-otp",
+      const response = await axiosInstance.post(
+        "/email/verify-otp",
         { otp: emailOtp, medium: "email" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -56,8 +55,8 @@ const OtpVerification = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:5000/email/verify-otp",
+      const response = await axiosInstance.post(
+        "/email/verify-otp",
         { otp: mobileOtp, medium: "phone" },
         { headers: { Authorization: `Bearer ${token}` } }
       );

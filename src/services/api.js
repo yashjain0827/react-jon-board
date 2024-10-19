@@ -1,9 +1,8 @@
-// src/services/api.js
-import axios from "axios";
-
-const API_URL = "http://localhost:5000";
-
-router.post('/auth/signup', (req, res) => {
-  // Your signup logic here
-  res.status(200).json({ message: 'Signup successful' });
+import axios from 'axios';
+const axiosInstance = axios.create({
+  // baseURL: 'https://trello-backend-vert.vercel.app/api', 
+  baseURL: 'http://localhost:5000', 
+  withCredentials: true, 
 });
+
+export default axiosInstance;

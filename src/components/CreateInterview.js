@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import DateIcon from "../img/date.svg";
 import DropIcon from "../img/dropdown.svg";
 import axios from "axios";
+import axiosInstance from "../services/api";
 
 const CreateInterview = () => {
   const navigate = useNavigate();
@@ -52,8 +53,8 @@ const CreateInterview = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/job/create",
+      const response = await axiosInstance.post(
+        "/job/create",
         jobData,
         {
           headers: {
@@ -148,7 +149,7 @@ const CreateInterview = () => {
                     <input
                       style={styles.emailInput}
                       type="email"
-                      placeholder={candidateEmail ? "Enter the email" : ""}
+                      placeholder={candidateEmail ? "" : "Enter the email"}
                       value={candidateEmail}
                       onChange={(e) => setCandidateEmail(e.target.value)}
                       onKeyDown={handleAddEmail}
@@ -357,6 +358,8 @@ const styles = {
     fontSize: "18px",
     marginLeft: "8px",
     minWidth: "150px",
+    fontSize:"24px",
+    color: "#535353B2",
   },
   userCircle: {
     width: "27px",
